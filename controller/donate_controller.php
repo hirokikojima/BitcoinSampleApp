@@ -25,15 +25,19 @@ class Donate_controller extends Abstract_controller
 	public function execute() {
 
 		// 送金処理
-		$access_key = $config->item('access_key');
-		$api_secret = $config->item('api_secret');
+		$access_key = $this->config->item('access_key');
+		$api_secret = $this->config->item('api_secret');
 		$coincheck= new Coincheck($access_key, $api_secret);
 
-		$address = $config->item('address');
-		$amount  = $config->item('amount');
-		$coincheck->send->create(array(
+		$address = $this->config->item('address');
+		$amount  = $this->config->item('amount');
+		$result = $coincheck->send->create(array(
 		    "address" => $address,
 		    "amount"  => $amount
 		));
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+		exit;
 	}
 }
